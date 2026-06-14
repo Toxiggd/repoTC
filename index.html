@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Filmów - REST API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+	<!--łogień-->
+    <div class="bg-left"></div>
+    <div class="bg-right"></div>
+
+    <!-- LOGOWANIE -->
+    <div id="loginPanel" class="panel login-centered">
+        <h2 style="text-align:center; color:#58a6ff;">Logowanie do katalogu filmów</h2>
+
+        <input type="text" id="loginUsername" placeholder="Nazwa użytkownika" autocomplete="off">
+        <input type="password" id="loginPassword" placeholder="Hasło">
+        <button id="loginBtn">Zaloguj</button>
+
+        <div id="loginError" class="error"></div>
+    </div>
+
+    <!-- panel -->
+    <div id="appPanel" class="panel" style="display: none;">
+
+        <div class="top-bar">
+            <h1>Filmy obejrzane przez mnie :)</h1>
+            <button id="logoutBtn" class="logout-btn">Wyloguj</button>
+        </div>
+
+        <!-- dodawanie -->
+        <div class="movie-form">
+            <input type="text" id="title" placeholder="Tytuł">
+            <input type="number" id="year" placeholder="Rok" min="1900" max="2100">
+            <input type="number" id="rating" placeholder="Ocena" min="0" max="10">
+            <input type="date" id="watchDate">
+            <button id="addMovieBtn">Dodaj</button>
+        </div>
+
+        <!--edytowanie -->
+        <div id="editForm" class="movie-form" style="display: none;">
+            <input type="hidden" id="editId">
+
+            <input type="text" id="editTitle" placeholder="Tytuł">
+            <input type="number" id="editYear" placeholder="Rok" min="1900" max="2100">
+            <input type="number" id="editRating" placeholder="Ocena" min="0" max="10">
+            <input type="date" id="editWatchDate">
+
+            <button id="updateMovieBtn">Zapisz</button>
+            <button id="cancelEditBtn">Anuluj</button>
+        </div>
+
+        <!--lista -->
+        <div id="movieList"></div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
