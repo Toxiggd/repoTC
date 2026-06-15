@@ -14,10 +14,12 @@ jobs:
 
       - name: Deploy via SCP
         run: |
-          # Zapisz klucz prywatny z sekretu do pliku
+          # Zapisz klucz prywatny
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
           chmod 600 private_key
-          # Kopiuj wszystkie pliki (w tym ukryte) przez SCP
+          # Tymczasowo zmień właściciela katalogu na azureuser
+          ssh -o StrictHostKeyChecking=no -i private_key azureuser@${{ secrets.VM_IP }} "sudo chown -R azureuser:azureuser /var/www/html/"
+          # Kopiuj pliki
           scp -o StrictHostKeyChecking=no -i private_key -r ./* azureuser@${{ secrets.VM_IP }}:/var/www/html/
-          # Ustaw uprawnienia i przeładuj Apache
+          # Przywróć właściciela na www-data i przeładuj Apache
           ssh -o StrictHostKeyChecking=no -i private_key azureuser@${{ secrets.VM_IP }} "sudo chown -R www-data:www-data /var/www/html/ && sudo systemctl reload apache2"
