@@ -20,6 +20,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo rm -rf /var/www/html/*
-            sudo cp -r $GITHUB_WORKSPACE/* /var/www/html/
+            sudo cp -r /home/runner/work/repoTC/repoTC/* /var/www/html/
             sudo chown -R www-data:www-data /var/www/html/
             sudo systemctl reload apache2
