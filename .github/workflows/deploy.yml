@@ -12,14 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VM_IP }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            sudo rm -rf /var/www/html/*
-            sudo cp -r /github/workspace/* /var/www/html/
-            sudo chown -R www-data:www-data /var/www/html/
-            sudo systemctl reload apache2
+      - name: Deploy via SCP
+        run: |
+          # Zapisz klucz prywatny z sekretu do pliku
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          # Kopiuj wszystkie pliki (w tym ukryte) przez SCP
+          scp -o StrictHostKeyChecking=no -i private_key -r ./* azureuser@${{ secrets.VM_IP }}:/var/www/html/
+          # Ustaw uprawnienia i przeładuj Apache
+          ssh -o StrictHostKeyChecking=no -i private_key azureuser@${{ secrets.VM_IP }} "sudo chown -R www-data:www-data /var/www/html/ && sudo systemctl reload apache2"
